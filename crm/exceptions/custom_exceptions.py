@@ -12,3 +12,11 @@ class UnexpectedErrorOccurredToGetTokenDetailsException(Exception):
 
 class GivenEnquiryDetailsAlreadyExistsException(Exception):
     pass
+
+
+class InvalidEnquiryDetailsIdException(Exception):
+    pass
+
+
+class CanNotClaimAlreadyClaimedEnquiredDetailsException(Exception):
+    pass

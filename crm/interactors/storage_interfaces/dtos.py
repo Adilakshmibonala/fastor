@@ -10,3 +10,4 @@ class EnquiryDetailsDTO:
     country_code: str
     course_name: str
     submitted_at: str
+    is_public_enquiry: bool
