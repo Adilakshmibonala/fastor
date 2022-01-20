@@ -3,7 +3,7 @@ import typing
 from crm.interactors.presenter_interfaces.get_enquiry_details_presenter_interface import \
     GetEnquiryDetailsPresenterInterface
 from django.http.response import HttpResponse
-from crm.interactors.dtos import AllEnquiryDetailsDTO, EnquiryDetailsDTO
+from crm.interactors.dtos import AllEnquiryDetailsDTO
 from crm.interactors.storage_interfaces.dtos import EnquiryDetailsDTO
 
 

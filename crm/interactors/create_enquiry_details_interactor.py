@@ -1,8 +1,7 @@
 from crm.exceptions.custom_exceptions import \
-    IncorrectPasswordException, UserDoesNotExistException, \
-    UnexpectedErrorOccurredToGetTokenDetailsException
-from crm.interactors.presenter_interfaces.login_presenter_interface\
-    import LoginPresenterInterface
+    GivenEnquiryDetailsAlreadyExistsException
+from crm.interactors.presenter_interfaces.create_enquiry_details_presenter_interface \
+    import CreateEquityDetailsPresenterInterface
 from crm.interactors.storage_interfaces.storage_interface import StorageInterface
 from crm.interactors.dtos import EnquiryDetailsDTO
 
@@ -14,10 +13,18 @@ class CreateEquityDetailsInteractor:
 
     def create_enquiry_details_wrapper(
             self, enquiry_details: EnquiryDetailsDTO,
-            presenter: LoginPresenterInterface):
-        self.create_enquiry_details(enquiry_details=enquiry_details)
+            presenter: CreateEquityDetailsPresenterInterface):
+        try:
+            self.create_enquiry_details(enquiry_details=enquiry_details)
+        except GivenEnquiryDetailsAlreadyExistsException:
+            return presenter.raise_given_enquiry_details_already_exists_exception()
 
     def create_enquiry_details(
             self, enquiry_details: EnquiryDetailsDTO):
-        self.storage.create_enquiry_details(
-            enquiry_details=enquiry_details)
+        is_enquiry_details_already_exists = self.storage.\
+            check_is_enquiry_details_already_exists(
+                enquiry_details=enquiry_details)
+        if is_enquiry_details_already_exists:
+            raise GivenEnquiryDetailsAlreadyExistsException()
+
+        self.storage.create_enquiry_details(enquiry_details=enquiry_details)

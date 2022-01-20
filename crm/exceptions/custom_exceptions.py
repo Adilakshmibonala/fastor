@@ -8,3 +8,7 @@ class UserDoesNotExistException(Exception):
 
 class UnexpectedErrorOccurredToGetTokenDetailsException(Exception):
     pass
+
+
+class GivenEnquiryDetailsAlreadyExistsException(Exception):
+    pass
