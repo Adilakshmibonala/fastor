@@ -20,7 +20,7 @@ class LoginInteractor:
         except IncorrectPasswordException:
             return presenter.raise_incorrect_password_exception()
         except UserDoesNotExistException:
-            return presenter.user_does_not_exist_exception()
+            return presenter.raise_user_does_not_exist_exception()
         except UnexpectedErrorOccurredToGetTokenDetailsException:
             return presenter.raise_unexpected_error_occurred_to_get_token_details_exception()
 
@@ -56,8 +56,10 @@ class LoginInteractor:
             "Content-Type": "application/json"
         }
         try:
+            print("#############3", url, data, headers)
             response = requests.post(
                 url=url, data=json.dumps(data), headers=headers)
+            print("$$$$", response, response.content)
             token_details_dict = json.loads(response.content)
         except Exception:
             raise UnexpectedErrorOccurredToGetTokenDetailsException()

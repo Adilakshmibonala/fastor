@@ -15,7 +15,7 @@ class LoginPresenterInterface:
         pass
 
     @abc.abstractmethod
-    def user_does_not_exist_exception(self) -> HttpResponse:
+    def raise_user_does_not_exist_exception(self) -> HttpResponse:
         pass
 
     @abc.abstractmethod
