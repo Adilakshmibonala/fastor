@@ -1,5 +1,7 @@
 import typing
 
+from django.db import transaction
+
 from crm.interactors.storage_interfaces import dtos as storage_dtos
 from crm.interactors.storage_interfaces.storage_interface import StorageInterface
 from crm.interactors.dtos import EnquiryDetailsDTO
@@ -89,6 +91,7 @@ class StorageImplementation(StorageInterface):
         UserEnquiryDetails.objects.create(
             user_id=user_id, enquiry_details_id=enquiry_details_id)
 
+    @transaction.atomic()
     def update_equity_details_as_private(
             self, enquiry_details_id: str, is_public_enquiry: bool):
         enquiry_details = EnquiryDetails.objects.select_for_update().get(
