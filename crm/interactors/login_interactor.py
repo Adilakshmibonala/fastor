@@ -56,10 +56,8 @@ class LoginInteractor:
             "Content-Type": "application/json"
         }
         try:
-            print("#############3", url, data, headers)
             response = requests.post(
                 url=url, data=json.dumps(data), headers=headers)
-            print("$$$$", response, response.content)
             token_details_dict = json.loads(response.content)
         except Exception:
             raise UnexpectedErrorOccurredToGetTokenDetailsException()

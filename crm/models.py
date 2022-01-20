@@ -11,7 +11,7 @@ class UserAccount(AbstractUser):
     created_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return "%s %d" % (str(self.id), self.user_type)
+        return "%s %s" % (str(self.id), self.user_type)
 
 
 class EnquiryDetails(models.Model):
@@ -21,8 +21,17 @@ class EnquiryDetails(models.Model):
     phone_number = models.CharField(max_length=50)
     country_code = models.CharField(max_length=10)
     course_name = models.CharField(max_length=256)
-    is_public_equity = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now=True)
+    is_public_enquiry = models.BooleanField(default=True)
+    submitted_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return "%s %s" % (str(self.id), self.username)
+
+
+class UserEnquiryDetails(models.Model):
+    id = models.UUIDField(default=uuid4, primary_key=True)
+    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+    enquiry_details = models.OneToOneField(EnquiryDetails, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "%s" % (str(self.id))
