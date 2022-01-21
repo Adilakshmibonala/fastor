@@ -25,7 +25,7 @@ POSTGRE_SQL_PASSWORD
 
 ```sh
 source .venv/bin/activate
-export DJANGO_SETTINGS_MODULE=fb_post_learning.settings
+export DJANGO_SETTINGS_MODULE=fastor.settings
 python manage.py makemigrations
 python manage.py migrate
 python manage.py createsuperuser
