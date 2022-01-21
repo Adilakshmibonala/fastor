@@ -6,6 +6,7 @@
 ```sh
 pip install virtualenv
 virtualenv .venv
+source .venv/bin/activate
 ```
 
 ## install requirements
@@ -24,7 +25,6 @@ POSTGRE_SQL_PASSWORD
 ## running django management commands & usage
 
 ```sh
-source .venv/bin/activate
 export DJANGO_SETTINGS_MODULE=fastor.settings
 python manage.py makemigrations
 python manage.py migrate
