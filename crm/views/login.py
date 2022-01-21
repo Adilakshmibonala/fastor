@@ -19,7 +19,7 @@ class LoginView(APIView):
         storage = StorageImplementation()
         interactor = LoginInteractor(storage=storage)
         response = interactor.login_wrapper(
-            username=request_body["username"], password=request_body["password"],
+            email=request_body["email"], password=request_body["password"],
             presenter=LoginPresenterImplementation())
 
         return response

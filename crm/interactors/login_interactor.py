@@ -13,10 +13,10 @@ class LoginInteractor:
         self.storage = storage
 
     def login_wrapper(
-            self, username: str, password: str,
+            self, email: str, password: str,
             presenter: LoginPresenterInterface):
         try:
-            token_details = self.login(username=username, password=password)
+            token_details = self.login(email=email, password=password)
         except IncorrectPasswordException:
             return presenter.raise_incorrect_password_exception()
         except UserDoesNotExistException:
@@ -26,22 +26,22 @@ class LoginInteractor:
 
         return presenter.get_response_for_login(token_details=token_details)
 
-    def login(self, username: str, password: str) -> TokenDetailsDTO:
+    def login(self, email: str, password: str) -> TokenDetailsDTO:
         from django.contrib.auth.hashers import check_password
 
         existing_encrypted_password = self.storage.get_user_password(
-            username=username)
+            email=email)
         is_valid_password = check_password(
             password, existing_encrypted_password)
         if not is_valid_password:
             raise IncorrectPasswordException()
 
         token_details = self._get_token_details(
-            username=username, password=password)
+            email=email, password=password)
         return token_details
 
     @staticmethod
-    def _get_token_details(username: str, password: str) -> TokenDetailsDTO:
+    def _get_token_details(email: str, password: str) -> TokenDetailsDTO:
         import requests
         import json
         import os
@@ -50,7 +50,7 @@ class LoginInteractor:
         end_point = '/api/token/'
         url = base_url + end_point
         data = {
-            "username": username, "password": password
+            "username": email, "password": password
         }
         headers = {
             "Content-Type": "application/json"

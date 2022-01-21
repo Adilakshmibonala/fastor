@@ -8,7 +8,7 @@ from crm.interactors.storage_interfaces import dtos as storage_dtos
 class StorageInterface:
 
     @abc.abstractmethod
-    def get_user_password(self, username: str) -> str:
+    def get_user_password(self, email: str) -> str:
         pass
 
     @abc.abstractmethod

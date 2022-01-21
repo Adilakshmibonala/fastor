@@ -1,7 +1,6 @@
 import typing
 
 from django.db import transaction
-
 from crm.interactors.storage_interfaces import dtos as storage_dtos
 from crm.interactors.storage_interfaces.storage_interface import StorageInterface
 from crm.interactors.dtos import EnquiryDetailsDTO
@@ -11,9 +10,9 @@ from crm.models import *
 
 class StorageImplementation(StorageInterface):
 
-    def get_user_password(self, username: str) -> str:
+    def get_user_password(self, email: str) -> str:
         try:
-            user_account = UserAccount.objects.get(username=username)
+            user_account = UserAccount.objects.get(email=email)
         except UserAccount.DoesNotExist:
             raise custom_exceptions.UserDoesNotExistException()
 

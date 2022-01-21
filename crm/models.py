@@ -9,6 +9,7 @@ class UserAccount(AbstractUser):
     id = models.UUIDField(default=uuid4, primary_key=True)
     user_type = models.CharField(max_length=50, choices=UserType.get_list_of_tuples())
     created_at = models.DateTimeField(auto_now=True)
+    email = models.EmailField(unique=True)
 
     def __str__(self):
         return "%s %s" % (str(self.id), self.user_type)
