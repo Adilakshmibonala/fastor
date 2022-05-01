@@ -33,3 +33,10 @@ class ClaimEnquiryDetailsInteractor:
         self.storage.update_equity_details_as_private(
             enquiry_details_id=enquiry_details_id,
             is_public_enquiry=False)
+
+        from crm.interactors.send_mail_to_user_interactor import \
+            SendMailToUserInteractor
+        interactor = SendMailToUserInteractor(
+            storage=self.storage)
+        interactor.send_mail_to_user(
+            enquiry_details_id=enquiry_details_id)
