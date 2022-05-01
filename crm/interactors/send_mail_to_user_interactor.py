@@ -17,4 +17,4 @@ class SendMailToUserInteractor:
                   'o161623@rguktrkv.ac.in\n' % (
                     enquiry_details.username)
         send_email_notification(
-            to_email=email, subject="Enquired Details Claimed", message=message)
+            to_email=email, subject="Enquiry Details Claimed", message=message)
