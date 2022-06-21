@@ -23,7 +23,7 @@ class SendSMSInteractor:
         invalid_phone_numbers = []
         validate_phone_number_pattern = "^\\+?[1-9][0-9]{7,14}$"
         for each_phone_number in phone_numbers:
-            if not re.match(validate_phone_number_pattern, "+12223334444"):
+            if not re.match(validate_phone_number_pattern, each_phone_number):
                 invalid_phone_numbers.append(each_phone_number)
 
         if invalid_phone_numbers:
