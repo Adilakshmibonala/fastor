@@ -29,8 +29,8 @@ class LoginInteractor:
     def login(self, email: str, password: str) -> TokenDetailsDTO:
         from django.contrib.auth.hashers import check_password
 
-        existing_encrypted_password = self.storage.get_user_password(
-            email=email)
+        existing_encrypted_password = self.storage.\
+            get_user_password(email=email)
         is_valid_password = check_password(
             password, existing_encrypted_password)
         if not is_valid_password:

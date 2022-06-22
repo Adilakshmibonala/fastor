@@ -38,6 +38,7 @@ class SMSStatusDetails(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     phone_number = models.CharField(max_length=50)
     status = models.CharField(max_length=50, choices=SMSStatus.get_list_of_tuples())
+    retrigger_count = models.IntegerField(default=1)
     history = HistoricalRecords(
         history_change_reason_field=models.TextField(null=True))
 
