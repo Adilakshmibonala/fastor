@@ -4,9 +4,9 @@ import typing
 class SendSMSInteractor:
 
     def send_sms(self, phone_numbers: typing.List[str], text: str):
-        from sms_provider.services.twillio_service import TwillioService
+        from sms_provider.services.twillio_service import TwilioService
 
-        twilio_service = TwillioService()
+        twilio_service = TwilioService()
         for each_phone_number in phone_numbers:
             response = twilio_service.send_message(
                 phone_number=each_phone_number, message=text)
