@@ -3,14 +3,13 @@ import typing
 
 class SendSMSInteractor:
 
-    def send_smd(self, phone_numbers: typing.List[str], text: str):
+    def send_sms(self, phone_numbers: typing.List[str], text: str):
         from sms_provider.services.twillio_service import TwillioService
 
-        twillio_service = TwillioService()
+        twilio_service = TwillioService()
         for each_phone_number in phone_numbers:
-            response = twillio_service.send_message(
-                phone_number=each_phone_number,
-                message=text)
+            response = twilio_service.send_message(
+                phone_number=each_phone_number, message=text)
             if response.status_code == 200:
                 pass
             else:
