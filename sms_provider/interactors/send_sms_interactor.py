@@ -1,6 +1,7 @@
 import typing
 
-from sms_provider.interactors.storage_interfaces.storage_interface import StorageInterface
+from sms_provider.interactors.storage_interfaces.storage_interface \
+    import StorageInterface
 
 
 class SendSMSInteractor:
@@ -9,8 +10,9 @@ class SendSMSInteractor:
         self.storage = storage
 
     def send_sms(self, phone_numbers: typing.List[str], text: str):
-        from sms_provider.services.twillio_service import TwilioService
         from collections import defaultdict
+        from sms_provider.interactors.sms_provider_interactor \
+            import SMSProviderInteractor
 
         sms_provider_details = self.storage.get_sms_provider_details(
             is_active=True)
@@ -19,9 +21,9 @@ class SendSMSInteractor:
 
         sms_provider_details = sorted(sms_provider_details, key=lambda k: k.throughput)
         min_throughput = sms_provider_details[0].throughput
-        provider_wise_throughput = defaultdict()
+        provider_wise_details = defaultdict()
         for each in sms_provider_details:
-            provider_wise_throughput[each.sms_provider] = each.throughput
+            provider_wise_details[each.sms_provider] = each
 
         sms_provider_wise_messages = defaultdict(int)
         batch_wise_msgs = self._get_batch_wise_objects(
@@ -29,18 +31,12 @@ class SendSMSInteractor:
         for batch_msgs in batch_wise_msgs:
             pass
 
+        interactor = SMSProviderInteractor(storage=self.storage)
         for sms_provider, phone_numbers in sms_provider_wise_messages.items():
-            pass
-            # TODO: Create an async task for each provider.
-
-        twilio_service = TwilioService()
-        for each_phone_number in phone_numbers:
-            response = twilio_service.send_message(
-                phone_number=each_phone_number, message=text)
-            if response.status_code == 200:
-                pass
-            else:
-                pass
+            sms_provider_details = provider_wise_details[sms_provider]
+            interactor.sms_provider(
+                sms_provider_details=sms_provider_details,
+                phone_numbers=phone_numbers, text=text)
 
     @staticmethod
     def _get_batch_wise_objects(objects, number_of_elements_per_batch):
