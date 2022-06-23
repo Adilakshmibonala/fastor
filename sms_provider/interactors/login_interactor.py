@@ -44,11 +44,8 @@ class LoginInteractor:
     def _get_token_details(email: str, password: str) -> TokenDetailsDTO:
         import requests
         import json
-        import os
 
-        base_url = os.environ["SERVER_BASE_URL"]
-        end_point = '/api/token/'
-        url = base_url + end_point
+        url = "http://127.0.0.1:8000/api/token/"
         data = {
             "username": email, "password": password
         }
@@ -59,7 +56,7 @@ class LoginInteractor:
             response = requests.post(
                 url=url, data=json.dumps(data), headers=headers)
             token_details_dict = json.loads(response.content)
-        except Exception:
+        except Exception as err:
             raise UnexpectedErrorOccurredToGetTokenDetailsException()
         token_details_dto = TokenDetailsDTO(
             access_token=token_details_dict["access"],

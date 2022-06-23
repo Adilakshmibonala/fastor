@@ -9,7 +9,7 @@ class LoginPresenterImplementation(
         LoginPresenterInterface, GetErrorResponseObject):
 
     def raise_incorrect_password_exception(self) -> HttpResponse:
-        from crm.constants.exception_messages \
+        from sms_provider.constants.exception_messages \
             import INCORRECT_PASSWORD_EXCEPTION
         return self.get_error_response_object(
             error_constant=INCORRECT_PASSWORD_EXCEPTION)
@@ -24,14 +24,14 @@ class LoginPresenterImplementation(
         return HttpResponse(content=json.dumps(data), status=200)
 
     def raise_user_does_not_exist_exception(self) -> HttpResponse:
-        from crm.constants.exception_messages \
+        from sms_provider.constants.exception_messages \
             import USER_DOES_NOT_EXISTS_EXCEPTION
         return self.get_error_response_object(
             error_constant=USER_DOES_NOT_EXISTS_EXCEPTION)
 
     def raise_unexpected_error_occurred_to_get_token_details_exception(self)\
             -> HttpResponse:
-        from crm.constants.exception_messages \
+        from sms_provider.constants.exception_messages \
             import UNEXPECTED_ERROR_OCCURRED_TO_GET_TOKEN_DETAILS_EXCEPTION
         return self.get_error_response_object(
             error_constant=UNEXPECTED_ERROR_OCCURRED_TO_GET_TOKEN_DETAILS_EXCEPTION)

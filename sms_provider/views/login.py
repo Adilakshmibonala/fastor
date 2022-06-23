@@ -8,8 +8,8 @@ class LoginView(APIView):
 
     def post(self, request):
         from sms_provider.interactors.login_interactor import LoginInteractor
-        from crm.storages.storage_implementation import StorageImplementation
-        from crm.presenters.login_presenter_implementation import LoginPresenterImplementation
+        from sms_provider.storages.storage_implementation import StorageImplementation
+        from sms_provider.presenters.login_presenter_implementation import LoginPresenterImplementation
 
         try:
             request_body = json.loads(request.body)

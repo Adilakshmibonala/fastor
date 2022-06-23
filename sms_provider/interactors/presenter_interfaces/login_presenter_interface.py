@@ -1,7 +1,7 @@
 import abc
 
 from django.http.response import HttpResponse
-from crm.interactors.dtos import TokenDetailsDTO
+from sms_provider.interactors.dtos import TokenDetailsDTO
 
 
 class LoginPresenterInterface:
