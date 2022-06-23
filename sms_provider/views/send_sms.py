@@ -13,21 +13,12 @@ class SendSMSView(APIView):
         request_data = request.data
         serializers = SendSMSValidationSerializer(data=request_data)
         if serializers.is_valid(raise_exception=True):
-            phone_numbers = request_data["phone_numbers"]
-            self._validate_phone_numbers(phone_numbers=phone_numbers)
-
-    @staticmethod
-    def _validate_phone_numbers(phone_numbers: typing.List[str]) -> None:
-        import re
-
-        invalid_phone_numbers = []
-        validate_phone_number_pattern = "^\\+?[1-9][0-9]{7,14}$"
-        for each_phone_number in phone_numbers:
-            if not re.match(validate_phone_number_pattern, "+12223334444"):
-                invalid_phone_numbers.append(each_phone_number)
-
-        if invalid_phone_numbers:
-            from sms_provider.exceptions.custom_exceptions \
-                import InvalidPhoneNumbersException
-            raise InvalidPhoneNumbersException(invalid_phone_numbers=invalid_phone_numbers)
-
+            from sms_provider.interactors.send_sms_interactor import SendSMSInteractor
+            from sms_provider.storages.storage_implementation import StorageImplementation
+            from sms_provider.presenters.send_sms_presenter_implementation import SendSMSPresenterImplementation
+            storage = StorageImplementation()
+            interactor = SendSMSInteractor(storage=storage)
+            response = interactor.send_sms_wrapper(
+                phone_numbers=request_data["phone_numbers"],
+                text=request_data["text"], presenter=SendSMSPresenterImplementation())
+            return response
