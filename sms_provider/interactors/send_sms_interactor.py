@@ -1,7 +1,10 @@
 import typing
 
+from sms_provider.interactors.presenter_interfaces.\
+    send_sms_presenter_interface import SendSMSPresenterInterface
 from sms_provider.interactors.storage_interfaces.storage_interface \
     import StorageInterface
+from sms_provider.exceptions.custom_exceptions import InvalidPhoneNumbersException
 
 
 class SendSMSInteractor:
@@ -9,10 +12,20 @@ class SendSMSInteractor:
     def __init__(self, storage: StorageInterface):
         self.storage = storage
 
+    def send_sms_wrapper(
+            self, phone_numbers: typing.List[str], text: str,
+            presenter: SendSMSPresenterInterface):
+        try:
+            self.send_sms(phone_numbers=phone_numbers, text=text)
+        except InvalidPhoneNumbersException as err:
+            return presenter.raise_invalid_phone_number_exception(
+                phone_number=err.invalid_phone_numbers)
+
     def send_sms(self, phone_numbers: typing.List[str], text: str):
         from sms_provider.interactors.sms_provider_interactor \
             import SMSProviderInteractor
 
+        self._validate_phone_numbers(phone_numbers=phone_numbers)
         sms_provider_details = self.storage.get_sms_provider_details(
             is_active=True)
         if not sms_provider_details:
@@ -43,7 +56,5 @@ class SendSMSInteractor:
                 invalid_phone_numbers.append(each_phone_number)
 
         if invalid_phone_numbers:
-            from sms_provider.exceptions.custom_exceptions \
-                import InvalidPhoneNumbersException
             raise InvalidPhoneNumbersException(invalid_phone_numbers=invalid_phone_numbers)
 
