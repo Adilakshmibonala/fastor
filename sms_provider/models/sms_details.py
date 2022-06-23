@@ -17,7 +17,7 @@ class UserAccount(AbstractUser):
         return "%s %s" % (str(self.id), self.email)
 
 
-class SMSProviderDetails(models.Model):
+class SMSProviderConfig(models.Model):
     id = models.UUIDField(default=uuid4, primary_key=True)
     sms_provider = models.CharField(max_length=50, choices=SMSProvider.get_list_of_tuples())
     created_at = models.DateTimeField(auto_now_add=True)
@@ -33,7 +33,7 @@ class SMSProviderDetails(models.Model):
 
 class SMSStatusDetails(models.Model):
     id = models.UUIDField(default=uuid4, primary_key=True)
-    sms_provider = models.ForeignKey(SMSProviderDetails, on_delete=models.CASCADE)
+    sms_provider = models.ForeignKey(SMSProviderConfig, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     phone_number = models.CharField(max_length=50)
