@@ -31,9 +31,10 @@ def send_sms_using_twilio_service(
         phone_numbers: typing.List[str], text: str):
 
     from sms_provider.services.twillio_service import TwilioService
+    from sms_provider.storages.storage_implementation \
+        import StorageImplementation
 
-    # TODO: Storage implementation will be there.
-    storage = object()
+    storage = StorageImplementation()
     twilio_service = TwilioService()
     for each_phone_number in phone_numbers:
         response = twilio_service.send_message(
