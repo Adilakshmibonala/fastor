@@ -16,6 +16,6 @@ class StorageInterface:
         pass
 
     @abc.abstractmethod
-    def get_sms_provider_details(
-            self, is_active: bool) -> typing.List[storage_dtos.SMSProviderDetailsDTO]:
+    def get_sms_provider_configs(
+            self, is_active: bool) -> typing.List[storage_dtos.SMSProviderConfigDTO]:
         pass

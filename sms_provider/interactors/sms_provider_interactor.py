@@ -4,7 +4,7 @@ from sms_provider.constants.enums import SMSProvider, SMSStatus
 from sms_provider.interactors.storage_interfaces.storage_interface \
     import StorageInterface
 from sms_provider.interactors.storage_interfaces.dtos import \
-    SMSProviderDetailsDTO, SMSStatusDetailsDTO
+    SMSProviderConfigDTO, SMSStatusDetailsDTO
 
 
 class SMSProviderInteractor:
@@ -13,7 +13,7 @@ class SMSProviderInteractor:
         self.storage = storage
 
     def sms_provider(
-            self, sms_provider_details: SMSProviderDetailsDTO,
+            self, sms_provider_details: SMSProviderConfigDTO,
             phone_numbers: typing.List[str], text: str):
         if sms_provider_details.sms_provider == SMSProvider.TWILIO.value:
             send_sms_using_twilio_service(
@@ -27,7 +27,7 @@ class SMSProviderInteractor:
 
 # TODO: make this as async task.
 def send_sms_using_twilio_service(
-        sms_provider_details: SMSProviderDetailsDTO,
+        sms_provider_details: SMSProviderConfigDTO,
         phone_numbers: typing.List[str], text: str):
 
     from sms_provider.services.twillio_service import TwilioService

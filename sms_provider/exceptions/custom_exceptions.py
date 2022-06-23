@@ -15,3 +15,6 @@ class UserDoesNotExistException(Exception):
 class UnexpectedErrorOccurredToGetTokenDetailsException(Exception):
     pass
 
+
+class NoSMSProviderConfigsExistsException(Exception):
+    pass

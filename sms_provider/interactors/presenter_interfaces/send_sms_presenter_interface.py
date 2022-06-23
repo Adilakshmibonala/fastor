@@ -11,3 +11,6 @@ class SendSMSPresenterInterface:
             self, phone_number: typing.List[str]) -> HttpResponse:
         pass
 
+    @abc.abstractmethod
+    def raise_no_sms_provider_configs_exists_exception(self) -> HttpResponse:
+        pass

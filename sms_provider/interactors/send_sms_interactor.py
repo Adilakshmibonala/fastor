@@ -4,7 +4,8 @@ from sms_provider.interactors.presenter_interfaces.\
     send_sms_presenter_interface import SendSMSPresenterInterface
 from sms_provider.interactors.storage_interfaces.storage_interface \
     import StorageInterface
-from sms_provider.exceptions.custom_exceptions import InvalidPhoneNumbersException
+from sms_provider.exceptions.custom_exceptions import InvalidPhoneNumbersException, \
+    NoSMSProviderConfigsExistsException
 
 
 class SendSMSInteractor:
@@ -20,16 +21,19 @@ class SendSMSInteractor:
         except InvalidPhoneNumbersException as err:
             return presenter.raise_invalid_phone_number_exception(
                 phone_number=err.invalid_phone_numbers)
+        except NoSMSProviderConfigsExistsException:
+            return presenter.raise_no_sms_provider_configs_exists_exception()
 
     def send_sms(self, phone_numbers: typing.List[str], text: str):
         from sms_provider.interactors.sms_provider_interactor \
             import SMSProviderInteractor
 
         self._validate_phone_numbers(phone_numbers=phone_numbers)
-        sms_provider_details = self.storage.get_sms_provider_details(
+        sms_provider_details = self.storage.get_sms_provider_configs(
             is_active=True)
         if not sms_provider_details:
-            pass
+            raise NoSMSProviderConfigsExistsException()
+
         total_throughput = 0
         for each in sms_provider_details:
             total_throughput += each.throughput

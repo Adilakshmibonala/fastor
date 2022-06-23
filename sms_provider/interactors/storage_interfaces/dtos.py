@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 
 @dataclass()
-class SMSProviderDetailsDTO:
+class SMSProviderConfigDTO:
     id: str
     sms_provider: str
     throughput: int
