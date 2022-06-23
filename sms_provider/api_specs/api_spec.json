@@ -1,0 +1,213 @@
+{
+  "swagger": "2.0",
+  "host": "localhost:8080",
+  "basePath": "/api/sms_provider",
+  "info": {
+    "version": "1.0.0",
+    "title": "SMS provider",
+    "description": "A simple SMS provider app",
+    "contact": {
+      "name": "AdiLakshmiBonala",
+      "email": "bonalaadilakshmi938@gmaill.com"
+    }
+  },
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+  },
+  "definitions": {
+  },
+  "parameters": {
+    "LoginParameter": {
+      "name": "Login",
+      "in": "body",
+      "description": "Login",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      }
+    },
+    "SendSMSDetails": {
+      "name": "SendSMSDetails",
+      "in": "body",
+      "description": "send sms to phone numbers",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "phone_numbers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "phone_numbers",
+          "text"
+        ]
+      }
+    }
+  },
+  "responses": {
+    "InvalidPhoneNumbersResponse": {
+      "description": "Bad Request Response",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "res_status": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "GIVEN_PHONE_NUMBERS_INVALID"
+              ]
+            }
+          }
+        },
+        "required": [
+          "res_status"
+        ]
+      }
+    },
+    "LoginBadRequestResponse": {
+      "description": "Bad Request Response",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "res_status": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "INCORRECT_PASSWORD",
+                "UNEXPECTED_ERROR_OCCURRED_TO_GET_TOKEN_DETAILS"
+              ]
+            }
+          }
+        },
+        "required": [
+          "res_status"
+        ]
+      }
+    },
+    "LoginNotFoundResponse": {
+      "description": "NotFound Response",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "res_status": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "USER_DOES_NOT_EXISTS"
+              ]
+            }
+          }
+        },
+        "required": [
+          "res_status"
+        ]
+      }
+    },
+    "LoginSuccessResponse": {
+      "description": "Success Response",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string"
+          },
+          "refresh_token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "access_token",
+          "refresh_token"
+        ]
+      }
+    }
+  },
+  "paths": {
+    "/send_sms/v1/": {
+      "post": {
+        "operationId": "send_sms_to_phone_numbers",
+        "summary": "Sending sms to phone numbers",
+        "description": "Sending sms to phone numbers",
+        "security": [
+          {
+            "oauth": [
+              "write"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/SendSMSDetails"
+          }
+        ],
+        "responses": {
+          "400": {
+            "$ref": "#/responses/InvalidPhoneNumbersResponse"
+          },
+          "200": {
+            "description": "Success Response"
+          }
+        }
+      }
+    },
+    "/login/v1/": {
+      "post": {
+        "operationId": "login",
+        "summary": "Login",
+        "description": "Login",
+        "security": [
+          {
+            "oauth": [
+              "read"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/LoginParameter"
+          }
+        ],
+        "responses": {
+          "400": {
+            "$ref": "#/responses/LoginBadRequestResponse"
+          },
+          "404": {
+            "$ref": "#/responses/LoginNotFoundResponse"
+          },
+          "200": {
+            "$ref": "#/responses/LoginSuccessResponse"
+          }
+        }
+      }
+    }
+  }
+}

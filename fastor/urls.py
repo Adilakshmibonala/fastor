@@ -19,7 +19,7 @@ from django.urls import path, include
 from rest_framework_simplejwt import views as jwt_views
 
 api = []
-apps = ["crm"]
+apps = ["crm", "sms_provider"]
 
 for app_name in apps:
     try:

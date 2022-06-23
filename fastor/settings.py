@@ -40,8 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'crm',
-    'rest_framework'
+    'rest_framework',
+    'sms_provider',
 ]
 
 MIDDLEWARE = [
@@ -129,7 +129,7 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'crm.UserAccount'
+AUTH_USER_MODEL = 'sms_provider.UserAccount'
 
 
 REST_FRAMEWORK = {
