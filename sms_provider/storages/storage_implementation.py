@@ -20,7 +20,7 @@ class StorageImplementation(StorageInterface):
     def create_sms_status_details(
             self, sms_status_details: storage_dtos.SMSStatusDetailsDTO):
         SMSStatusDetails.objects.create(
-            sms_provider=sms_status_details.sms_provider_id,
+            sms_provider_id=sms_status_details.sms_provider_id,
             phone_number=sms_status_details.phone_number,
             status=sms_status_details.status)
 

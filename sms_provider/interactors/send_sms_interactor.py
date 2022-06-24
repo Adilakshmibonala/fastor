@@ -17,7 +17,7 @@ class SendSMSInteractor:
             self, phone_numbers: typing.List[str], text: str,
             presenter: SendSMSPresenterInterface):
         try:
-            self.send_sms(phone_numbers=phone_numbers, text=text)
+            return self.send_sms(phone_numbers=phone_numbers, text=text)
         except InvalidPhoneNumbersException as err:
             return presenter.raise_invalid_phone_number_exception(
                 phone_number=err.invalid_phone_numbers)
@@ -42,12 +42,15 @@ class SendSMSInteractor:
         interactor = SMSProviderInteractor(storage=self.storage)
         messages_count = 0
         for each in sms_provider_details:
-            msg_size = each.throughput * multiplier
+            msg_size = int(each.throughput * multiplier)
             phone_numbers_for_provider = phone_numbers[messages_count:msg_size]
             interactor.sms_provider(
                 sms_provider_details=each, text=text,
                 phone_numbers=phone_numbers_for_provider)
             messages_count += msg_size
+
+        from django.http.response import HttpResponse
+        return HttpResponse(content="Success", status=200)
 
     @staticmethod
     def _validate_phone_numbers(phone_numbers: typing.List[str]) -> None:

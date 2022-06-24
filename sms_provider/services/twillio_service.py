@@ -1,4 +1,5 @@
 class TwilioService:
 
     def send_message(self, phone_number: str, message: str):
-        pass
+        from django.http.response import HttpResponse
+        return HttpResponse(content="Success", status=200)
