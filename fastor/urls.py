@@ -17,6 +17,9 @@ from django.contrib import admin
 from django.conf.urls import url
 from django.urls import path, include
 from rest_framework_simplejwt import views as jwt_views
+from apscheduler.schedulers.background import BackgroundScheduler
+from sms_provider.schedulers import retrigger_falied_msgs
+from django.conf import settings
 
 api = []
 apps = ["crm", "sms_provider"]
@@ -37,3 +40,9 @@ urlpatterns = [
          jwt_views.TokenRefreshView.as_view(),
          name='token_refresh'),
 ]
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(retrigger_falied_msgs.re_trigger_failed_msgs,
+                  trigger='cron', hour=settings.TASK_RUNNER_HOURS,
+                  minute=settings.TASK_RUNNER_MINUTES, max_instances=1)
+scheduler.start()

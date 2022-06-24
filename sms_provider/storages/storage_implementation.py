@@ -1,5 +1,6 @@
 import typing
 
+from sms_provider.interactors.dtos import SMSStatusDetailsDTO
 from sms_provider.interactors.storage_interfaces.storage_interface \
     import StorageInterface
 from sms_provider.exceptions import custom_exceptions
@@ -35,3 +36,20 @@ class StorageImplementation(StorageInterface):
                 throughput=sms_provider_config.throughput)
             for sms_provider_config in sms_provider_configs
         ]
+
+    def get_failed_msgs(self, status: str) -> typing.List[SMSStatusDetailsDTO]:
+        sms_status_details = SMSStatusDetails.objects.filter(
+            status=status).prefetch_related("sms_provider")
+        return [
+            SMSStatusDetailsDTO(
+                id=str(each.id),
+                phone_number=each.phone_number,
+                sms_provider=each.sms_provider.sms_provider)
+            for each in sms_status_details
+        ]
+
+    def update_sms_status_details(self, sms_status_details_id: str, status: str):
+        from django.db.models import F
+
+        SMSStatusDetails.objects.filter(id=sms_status_details_id).update(
+            status=status, retrigger_count=F("retrigger_count") + 1)

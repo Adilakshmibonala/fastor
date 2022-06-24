@@ -27,3 +27,8 @@ class SendSMSPresenterImplementation(SendSMSPresenterInterface, GetErrorResponse
             "res_status": error_constant[1]
         }
         return HttpResponse(content=json.dumps(data), status=error_constant[2])
+
+    def get_success_response(self) -> HttpResponse:
+        from django.http.response import HttpResponse
+
+        return HttpResponse(content="Sent Success", status=200)
