@@ -50,7 +50,7 @@ class SendSMSInteractor:
             messages_count += msg_size
 
         from django.http.response import HttpResponse
-        return HttpResponse(content="Success", status=200)
+        return HttpResponse(content="Sent Success", status=200)
 
     @staticmethod
     def _validate_phone_numbers(phone_numbers: typing.List[str]) -> None:

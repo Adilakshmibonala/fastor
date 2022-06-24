@@ -5,6 +5,7 @@ from sms_provider.interactors.storage_interfaces.storage_interface \
     import StorageInterface
 from sms_provider.interactors.storage_interfaces.dtos import \
     SMSProviderConfigDTO, SMSStatusDetailsDTO
+from zappa.asynchronous import task
 
 
 class SMSProviderInteractor:
@@ -20,12 +21,13 @@ class SMSProviderInteractor:
                 sms_provider_details=sms_provider_details,
                 phone_numbers=phone_numbers, text=text)
         elif sms_provider_details.sms_provider == SMSProvider.JIO.value:
+            # For now added twilio for jio also. Will change it.
             send_sms_using_twilio_service(
                 sms_provider_details=sms_provider_details,
                 phone_numbers=phone_numbers, text=text)
 
 
-# TODO: make this as async task.
+@task
 def send_sms_using_twilio_service(
         sms_provider_details: SMSProviderConfigDTO,
         phone_numbers: typing.List[str], text: str):
@@ -33,13 +35,14 @@ def send_sms_using_twilio_service(
     from sms_provider.services.twillio_service import TwilioService
     from sms_provider.storages.storage_implementation \
         import StorageImplementation
+    from sms_provider.constants.constants import TWILIO_SUCCESS_RESPONSE_STATUS
 
     storage = StorageImplementation()
     twilio_service = TwilioService()
     for each_phone_number in phone_numbers:
         response = twilio_service.send_message(
             phone_number=each_phone_number, message=text)
-        if response.status_code == 200:
+        if response.status == TWILIO_SUCCESS_RESPONSE_STATUS:
             sms_status_details = SMSStatusDetailsDTO(
                 sms_provider_id=sms_provider_details.id,
                 phone_number=each_phone_number,
