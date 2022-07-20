@@ -1,4 +1,4 @@
-# FASTOR
+# SMS PROVIDER
 
 
 ## setup virtualenv
@@ -15,13 +15,6 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Need to expose values for the following environment variables.
-```commandline
-SERVER_BASE_URL
-POSTGRE_SQL_DB_NAME
-POSTGRE_SQL_USER_NAME
-POSTGRE_SQL_PASSWORD
-```
 ## running django management commands & usage
 
 ```sh

@@ -11,7 +11,16 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 from pathlib import Path
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+import environ
+import sys
 
+
+root = environ.Path(__file__) - 3  # get root of the project
+env = environ.Env()
+environ.Env.read_env()
+sys.path.append('/fastor/venv/sms_provider')
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,6 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-o^zt(lkc!45vevs+x+bb4l%epiof&8a^lgd*_h4x4@kb&wc#f5'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,8 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'crm',
-    'rest_framework'
+    'rest_framework',
+    'sms_provider',
 ]
 
 MIDDLEWARE = [
@@ -75,20 +85,10 @@ WSGI_APPLICATION = 'fastor.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ['POSTGRE_SQL_DB_NAME'],
-        'USER': os.environ['POSTGRE_SQL_USER_NAME'],
-        'PASSWORD': os.environ['POSTGRE_SQL_PASSWORD'],
-        'HOST': 'localhost',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -136,7 +136,7 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'crm.UserAccount'
+AUTH_USER_MODEL = 'sms_provider.UserAccount'
 
 
 REST_FRAMEWORK = {
@@ -144,3 +144,20 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
+
+sentry_sdk.init(
+    dsn="https://9f08aae8b03d4cd48112f48e1b7b7279@o1234385.ingest.sentry.io/6383660",
+    integrations=[DjangoIntegration()],
+    environment="dev",
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production.
+    traces_sample_rate=1.0,
+
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True
+)
+
+TASK_RUNNER_HOURS = 8
+TASK_RUNNER_MINUTES = 5
