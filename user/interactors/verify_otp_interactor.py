@@ -2,6 +2,7 @@ from user.exceptions.custom_exceptions import UserDoesNotExistsException, Invali
     UnexpectedErrorOccurredToGetTokenDetailsException
 from user.interactors.presenter_interface.verify_otp_presenter_intrface import VerifyOTPPresenterInterface
 from user.interactors.storage_interface.storage_interface import StorageInterface
+from user.interactors.dtos import TokenDetailsDTO
 
 
 class VerifyOTPInteractor:
