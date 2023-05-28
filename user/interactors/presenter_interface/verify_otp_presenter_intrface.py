@@ -1,5 +1,7 @@
 import abc
 
+from user.interactors.dtos import TokenDetailsDTO
+
 
 class VerifyOTPPresenterInterface:
 
@@ -12,5 +14,5 @@ class VerifyOTPPresenterInterface:
         pass
 
     @abc.abstractmethod
-    def success_response(self):
+    def success_response(self, token_details: TokenDetailsDTO):
         pass

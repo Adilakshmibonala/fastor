@@ -8,3 +8,7 @@ class UserDoesNotExistsException(Exception):
 
 class InvalidOTPException(Exception):
     pass
+
+
+class UnexpectedErrorOccurredToGetTokenDetailsException(Exception):
+    pass

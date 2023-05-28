@@ -10,3 +10,9 @@ class RegisterUserDetailsDTO:
     gender: Gender
     email: str
     phone_number: int
+
+
+@dataclass()
+class TokenDetailsDTO:
+    access_token: str
+    refresh_token: str
