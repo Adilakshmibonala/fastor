@@ -39,3 +39,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return "User - %s %s" % (self.email, self.gender)
+
+
+class UserOTP(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    otp = models.CharField(max_length=6)
+    expiration_time = models.DateTimeField()
+
+    def __str__(self):
+        return "OTP - %s %s" % (self.user, self.otp)

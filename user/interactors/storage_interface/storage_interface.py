@@ -22,5 +22,5 @@ class StorageInterface:
         pass
 
     @abc.abstractmethod
-    def validate_otp(self, user_id: int, otp: str):
+    def validate_otp(self, email: str, otp: int):
         pass

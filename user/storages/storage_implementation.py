@@ -1,6 +1,6 @@
 from user.interactors.dtos import RegisterUserDetailsDTO
 from user.interactors.storage_interface.storage_interface import StorageInterface
-from user.models import User
+from user.models import User, UserOTP
 
 
 class StorageImplementation(StorageInterface):
@@ -24,3 +24,18 @@ class StorageImplementation(StorageInterface):
         except User.DoesNotExists:
             raise UserDoesNotExistsException()
         return user.phone_number
+
+    def create_user_otp(self, user_id: int, otp: str):
+        from django.utils import timezone
+        expiration_time = timezone.now() + timezone.timedelta(minutes=5)
+        UserOTP.objects.update_or_create(user_id=user_id, otp=otp, expiration_time=expiration_time)
+
+    def validate_otp(self, email: str, otp: int):
+        from django.utils import timezone
+        from user.exceptions.custom_exceptions import InvalidOTPException
+
+        try:
+            UserOTP.objects.get(
+                user__email=email, otp=otp, expiration_time__gte=timezone.now())
+        except UserOTP.DoesNotExists:
+            raise InvalidOTPException()

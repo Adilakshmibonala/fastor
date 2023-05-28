@@ -4,3 +4,7 @@ class UserAlreadyRegisteredException(Exception):
 
 class UserDoesNotExistsException(Exception):
     pass
+
+
+class InvalidOTPException(Exception):
+    pass

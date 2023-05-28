@@ -10,3 +10,10 @@ USER_DOES_NOT_EXISTS_EXCEPTION = (
     "USER_DOES_NOT_EXISTS",
     400
 )
+
+
+INVALID_OTP_EXCEPTION = (
+    "Invalid OTP",
+    "INVALID_OTP",
+    404
+)

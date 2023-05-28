@@ -27,3 +27,10 @@ class VerifyOTPRequestValidationSerializer(serializers.Serializer):
 
     class Meta:
         fields = "__all__"
+
+
+class ResendOTPRequestValidationSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+
+    class Meta:
+        fields = "__all__"
