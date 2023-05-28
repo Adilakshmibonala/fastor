@@ -16,3 +16,11 @@ class StorageInterface:
     @abc.abstractmethod
     def get_user_phone_number(self, email: str):
         pass
+
+    @abc.abstractmethod
+    def create_user_otp(self, user_id: int, otp: str):
+        pass
+
+    @abc.abstractmethod
+    def validate_otp(self, user_id: int, otp: str):
+        pass

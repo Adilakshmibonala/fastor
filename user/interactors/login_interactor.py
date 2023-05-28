@@ -28,12 +28,8 @@ class LoginInteractor:
             body="{otp} is your Panorbit verification OTP. Please do not share it with anyone.".format(otp=otp),
             from_=os.environ["TWILIO_PHONE_NUMBER"],
             to="+91{phone_number}".format(phone_number=phone_number))
+        self.storage.create_user_otp(user_id=1, otp=otp)
 
     @staticmethod
     def generate_otp(length: int):
-        import random
-        digits = "0123456789"
-        otp = ""
-        for _ in range(length):
-            otp += random.choice(digits)
-        return otp
+        return 0

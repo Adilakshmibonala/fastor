@@ -3,10 +3,10 @@ from user.interactors.login_interactor import LoginInteractor
 from user.serializers.user import LoginUserRequestValidationSerializer
 
 
-class LoginView(viewsets.GenericViewSet):
+class LoginViewSet(viewsets.GenericViewSet):
     serializer_class = LoginUserRequestValidationSerializer
 
-    def post(self, request):
+    def create(self, request):
         from user.storages.storage_implementation import StorageImplementation
         from user.presenters.login_presenter_implementation import LoginPresenterImplementation
 

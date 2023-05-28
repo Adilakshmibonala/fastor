@@ -19,3 +19,11 @@ class LoginUserRequestValidationSerializer(serializers.Serializer):
 
     class Meta:
         fields = "__all__"
+
+
+class VerifyOTPRequestValidationSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+    otp = serializers.IntegerField(required=True)
+
+    class Meta:
+        fields = "__all__"
