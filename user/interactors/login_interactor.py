@@ -16,7 +16,24 @@ class LoginInteractor:
         return presenter.success_response()
 
     def login_user(self, email: str):
-        is_user_already_registered = self.storage.\
-            check_is_user_already_registered(email=email)
-        if is_user_already_registered:
-            raise UserDoesNotExistsException()
+        import os
+        from twilio.rest import Client
+
+        phone_number = self.storage.get_user_phone_number(email=email)
+        account_sid = os.environ["ACCOUNT_SID"]
+        auth_token = os.environ["TWILIO_AUTH_TOKEN"]
+        client = Client(account_sid, auth_token)
+        otp = self.generate_otp(length=6)
+        client.messages.create(
+            body="{otp} is your Panorbit verification OTP. Please do not share it with anyone.".format(otp=otp),
+            from_=os.environ["TWILIO_PHONE_NUMBER"],
+            to="+91{phone_number}".format(phone_number=phone_number))
+
+    @staticmethod
+    def generate_otp(length: int):
+        import random
+        digits = "0123456789"
+        otp = ""
+        for _ in range(length):
+            otp += random.choice(digits)
+        return otp

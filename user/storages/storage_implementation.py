@@ -16,3 +16,11 @@ class StorageImplementation(StorageInterface):
             email=register_user_details_dto.email,
             phone_number=register_user_details_dto.phone_number)
         return user_obj.id
+
+    def get_user_phone_number(self, email: str):
+        from user.exceptions.custom_exceptions import UserDoesNotExistsException
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExists:
+            raise UserDoesNotExistsException()
+        return user.phone_number

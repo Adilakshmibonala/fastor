@@ -12,3 +12,7 @@ class StorageInterface:
     @abc.abstractmethod
     def check_is_user_already_registered(self, email: str) -> bool:
         pass
+
+    @abc.abstractmethod
+    def get_user_phone_number(self, email: str):
+        pass
