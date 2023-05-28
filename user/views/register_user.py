@@ -1,20 +1,26 @@
 from rest_framework import viewsets
-from rest_framework.response import Response
-from rest_framework import status
-from user.serializers.register_user import \
-    RegisterUserRequestValidationSerializer, RegisterUserSerializer
+from user.interactors.register_user_interactor import RegisterUserInteractor
+from user.serializers.user import \
+    RegisterUserRequestValidationSerializer
 
 
 class UserSignUpViewSet(viewsets.GenericViewSet):
     serializer_class = RegisterUserRequestValidationSerializer
 
     def create(self, request):
+        from user.storages.storage_implementation import StorageImplementation
+        from user.interactors.dtos import RegisterUserDetailsDTO
+        from user.presenters.register_user_presenter_implementation import \
+            RegisterUserPresenterImplementation
+
         request_data = request.data
         register_user_validation_serializer = \
             RegisterUserRequestValidationSerializer(data=request_data)
         register_user_validation_serializer.is_valid(raise_exception=True)
 
-        register_user_serializer = RegisterUserSerializer(data=request_data)
-        user = register_user_serializer.save()
+        interactor = RegisterUserInteractor(storage=StorageImplementation())
+        response = interactor.register_user_wrapper(
+            presenter=RegisterUserPresenterImplementation(),
+            register_user_details_dto=RegisterUserDetailsDTO(**request_data))
 
-        return Response(data={"id": user.id}, status=status.HTTP_201_CREATED)
+        return response

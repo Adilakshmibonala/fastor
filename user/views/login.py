@@ -1,29 +1,22 @@
-import json
-
-from rest_framework.views import APIView
-from django.http import HttpResponse
-
-from authentication.serializers.login_serializer import \
-    LoginSerializer
+from rest_framework import viewsets
+from user.interactors.login_interactor import LoginInteractor
+from user.serializers.user import LoginUserRequestValidationSerializer
 
 
-class LoginView(APIView):
-    serializer_class = LoginSerializer
+class LoginView(viewsets.GenericViewSet):
+    serializer_class = LoginUserRequestValidationSerializer
 
     def post(self, request):
-        from authentication.interactors.login_interactor import LoginInteractor
-        from authentication.storages.storage_implementation import StorageImplementation
-        from authentication.presenters.login_presenter_implementation import LoginPresenterImplementation
+        from user.storages.storage_implementation import StorageImplementation
+        from user.presenters.login_presenter_implementation import LoginPresenterImplementation
 
-        try:
-            request_body = json.loads(request.body)
-        except json.JSONDecodeError:
-            return HttpResponse(status=400, content="InvalidRequestData")
+        request_data = request.data
+        serializer = LoginUserRequestValidationSerializer()
+        serializer.is_valid(raise_exception=True)
 
-        storage = StorageImplementation()
-        interactor = LoginInteractor(storage=storage)
-        response = interactor.login_wrapper(
-            email=request_body["email"], password=request_body["password"],
-            presenter=LoginPresenterImplementation())
+        email = request_data["email"]
+        interactor = LoginInteractor(storage=StorageImplementation())
+        response = interactor.login_user_wrapper(
+            email=email, presenter=LoginPresenterImplementation())
 
         return response

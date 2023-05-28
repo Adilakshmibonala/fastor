@@ -14,10 +14,8 @@ class RegisterUserRequestValidationSerializer(serializers.Serializer):
         fields = "__all__"
 
 
-class RegisterUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = get_user_model()
-        fields = ['first_name', 'last_name', 'gender', 'email', 'phone_number']
+class LoginUserRequestValidationSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
 
-    def create(self, validated_data):
-        return get_user_model().objects.create_user(**validated_data)
+    class Meta:
+        fields = "__all__"
