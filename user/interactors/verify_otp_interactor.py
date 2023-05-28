@@ -26,9 +26,10 @@ class VerifyOTPInteractor:
             raise UserDoesNotExistsException()
 
         self.storage.validate_otp(email=email, otp=otp)
+        self._get_token_details(email=email)
 
     @staticmethod
-    def _get_token_details(email: str, password: str) -> TokenDetailsDTO:
+    def _get_token_details(email: str) -> TokenDetailsDTO:
         import requests
         import json
         import os
@@ -36,9 +37,7 @@ class VerifyOTPInteractor:
         base_url = os.environ["SERVER_BASE_URL"]
         end_point = '/api/token/'
         url = base_url + end_point
-        data = {
-            "username": email, "password": password
-        }
+        data = {"username": email}
         headers = {
             "Content-Type": "application/json"
         }
