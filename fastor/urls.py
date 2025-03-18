@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.conf.urls import url
+from django.urls import path, re_path
 from django.urls import path, include
 from rest_framework_simplejwt import views as jwt_views
 
@@ -23,13 +23,13 @@ apps = ["crm"]
 
 for app_name in apps:
     try:
-        api.append(url(r'^' + app_name + '/', include(app_name + '.urls')))
+        api.append(re_path(r'^' + app_name + '/', include(app_name + '.urls')))
     except ImportError:
         pass
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^api/', include(api)),
+    re_path(r'^admin/', admin.site.urls),
+    re_path(r'^api/', include(api)),
     path('api/token/',
          jwt_views.TokenObtainPairView.as_view(),
          name='token_obtain_pair'),
